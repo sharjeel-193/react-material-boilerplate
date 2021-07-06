@@ -1,11 +1,21 @@
 
+import { ThemeProvider, Typography, AppBar, Box, makeStyles, LinearProgress, Toolbar, Link} from '@material-ui/core';
+
 import './App.css';
+import theme from "./theme"
+import Routes from './Routes'
+import { Provider } from 'react-redux';
+import store from './redux-store/store'
+
 
 function App() {
+  
   return (
-    <div className="app">
-      <h1>REACT MATERIAL BOILERPLATE</h1>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <Routes />
+      </Provider>
+    </ThemeProvider>
   );
 }
 
