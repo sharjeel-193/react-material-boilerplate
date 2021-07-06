@@ -15,11 +15,15 @@ In the project directory, we are using following packaged for different types of
 * react-awesome-modal
 * jquery
 
-
 ### Icons
 
 * @material-ui/icons
 * react-icons
+
+### Routing
+
+* react-router-dom
+* react-helmet
 
 ### Forms
 
