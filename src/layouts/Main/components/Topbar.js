@@ -101,7 +101,7 @@ function Topbar(props) {
                 <MenuIcon />
               </IconButton>
             </Toolbar>
-            <Toolbar>
+            {/* <Toolbar>
               <div className={classes.flexGrow} />
               <IconButton>
                 <Avatar>J</Avatar>
@@ -109,7 +109,7 @@ function Topbar(props) {
               <IconButton>
                 <InputIcon />
               </IconButton>
-            </Toolbar>
+            </Toolbar> */}
           </Hidden>
         </AppBar>
     
