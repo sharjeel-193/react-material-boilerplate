@@ -43,7 +43,14 @@ const useStyles = makeStyles((theme) => ({
 	},
 	active: {
 		backgroundColor: theme.palette.primary.main,
-		color:'white'
+		color:'white',
+		'& $icon':{
+			color: 'white'
+		},
+		'&:hover':{
+			backgroundColor: theme.palette.primary.main,
+			color:'white'
+		}
 	},
 	
 	listItemSelected: {

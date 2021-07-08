@@ -5,6 +5,7 @@ import MuiCard from "./MuiCard"
 import MuiPaper from "./MuiPaper"
 import MuiTypography from "./MuiTypography"
 import MuiOutlinedInput from './MuiOutlinedInput'
+import MuiSwitch from './MuiSwitch'
 
 export default {
 	MuiGrid,
@@ -13,5 +14,6 @@ export default {
 	MuiCard,
 	MuiPaper,
 	MuiTypography,
-	MuiOutlinedInput
+	MuiOutlinedInput,
+	MuiSwitch
 };

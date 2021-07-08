@@ -1,5 +1,32 @@
+
 body{
   width: 100%;
   margin: 0;
   padding: 0;
 }
+.main-layout-content{
+  width: 95%;
+  margin: 30px auto;
+}
+.headings-box{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.add-btn:hover{
+  background-color: #9162c4;
+  color: white;
+}
+@media only screen and (max-width: 768px) {
+  .headings-box{
+    flex-direction: column;
+    width: 100%;
+    /* background-color: aqua; */
+  }
+}
+.table-container{
+  width: 90%;
+  margin: 30px auto;
+}
+
