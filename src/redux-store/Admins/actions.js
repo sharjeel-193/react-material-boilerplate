@@ -8,5 +8,13 @@ const addAdmin = (admin) => {
     }
 }
 
+const editAdmin = (email, admin) => {
+    console.log('Dispatching Edit Admin Action')
+    return {
+        type: types.UPDATE_ADMIN,
+        payload: {email, admin}
+    }
+}
 
-export default {addAdmin}
+
+export default {addAdmin, editAdmin}

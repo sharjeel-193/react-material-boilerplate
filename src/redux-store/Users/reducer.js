@@ -26,12 +26,24 @@ const initialState = {
 }
 
 const userReducer = (state=initialState, action) => {
+    let index
+    let newUsers
     switch(action.type){
         case types.ADD_USER:
             console.log({'Add User Payload': action.payload})
             return {
                 ...state,
                 users: state.users.concat(action.payload)
+            }
+        case types.UPDATE_USER:
+            console.log({'Edit User Payload': action.payload})
+            index = state.users.findIndex((user) => user.phone==action.payload.phone)
+            newUsers = [...state.users]
+            newUsers[index].first_name = action.payload.user.first_name
+            newUsers[index].last_name = action.payload.user.last_name
+            return {
+                ...state,
+                users: newUsers
             }
         default:
             return state

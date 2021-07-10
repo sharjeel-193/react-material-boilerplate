@@ -8,5 +8,13 @@ const addUser = (user) => {
     }
 }
 
+const editUser = (phone, user) => {
+    console.log('Dispatchinf Edit User Action')
+    return {
+        type: types.UPDATE_USER,
+        payload: {phone, user}
+    }
+}
 
-export default {addUser}
+
+export default {addUser, editUser}

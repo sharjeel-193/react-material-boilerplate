@@ -1,8 +1,9 @@
-import React, {Fragment, useEffect, forwardRef} from 'react'
+import React, {Fragment, useEffect, forwardRef, useState} from 'react'
 import {Typography, Box, makeStyles, Button, Paper, FormControlLabel, Switch} from '@material-ui/core'
 import MaterialTable from 'material-table'
 import {connect} from 'react-redux'
 import { user_actions } from '../../redux-store'
+import {AddModal, EditModal} from './components'
 import Helmet from 'react-helmet'
 import { AddBox, FirstPage, LastPage, ChevronLeft, ChevronRight, Search, ArrowDownward, Clear, Check, Edit, DeleteOutline, SaveAlt, FilterList, Remove, ViewColumn, Add } from '@material-ui/icons'
 
@@ -36,11 +37,18 @@ const tableIcons = {
   }
 
 function Users(props) {
-    const {usersList} = props
+    const {usersList, addUser, editUser} = props
     const classes  = useStyle()
+    const [addModal, setAddModal] = useState(false)
+    const [editModal, setEditModal] = useState(false)
+    const [modalUser, setModalUser] = useState({})
     useEffect(() => {
         console.log({'Props in Users': props})
     }, [props])
+    const handleEditModal = (rowData) => {
+        setModalUser(rowData)
+        setEditModal(true)
+    }
     return (
         <Fragment>
             <Helmet>
@@ -48,8 +56,8 @@ function Users(props) {
             </Helmet>
             <div className="main-layout-content">
                 <Box className="headings-box">
-                    <Typography variant="h1" component="h1">Admin Screen</Typography>
-                    <Button variant="outlined" color="primary" className={classes.addBtn} startIcon={<Add />} >
+                    <Typography variant="h1" component="h1">Users Screen</Typography>
+                    <Button variant="outlined" color="primary" className={classes.addBtn} startIcon={<Add />} onClick={() => setAddModal(true)} >
                         Add User
                     </Button>
                 </Box>
@@ -74,7 +82,9 @@ function Users(props) {
                             {
                                 icon: Edit,
                                 tooltip: 'Edit User',
-
+                                onClick: (event, rowData) => {
+                                    handleEditModal(rowData)
+                                }
                             }
                         ]}
                         data={usersList.map((user) => {
@@ -94,6 +104,8 @@ function Users(props) {
 
                     </MaterialTable>
                 </Paper>
+                <AddModal visible={addModal} closeModal={() => setAddModal(false)} addUser={addUser} />
+                <EditModal visible={editModal} closeModal={() => setEditModal(false)} currentUser={modalUser} editUser={editUser} />
             </div>
         </Fragment>
     )
@@ -106,7 +118,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        addUser: (user) => dispatch(user_actions.addUser(user))
+        addUser: (user) => dispatch(user_actions.addUser(user)),
+        editUser: (phone, user) => dispatch(user_actions.editUser(phone, user))
     }
 }
 

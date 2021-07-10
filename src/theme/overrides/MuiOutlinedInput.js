@@ -1,14 +1,18 @@
 export default {
     root: {
-        padding: '2px'
+        padding: '8px'
     },
     inputMarginDense: {
-        padding: '2px'
+        padding: '0px'
     },
     marginDense: {
-        padding: '2px'
+        padding: '0px'
     },
     input: {
-        padding: '12px'
+        marginBottom: '2px',
+        padding: '0px',
     },
+    error: {
+        borderColor: 'red !important'
+    }
 }

@@ -1,10 +1,11 @@
-import React, {Fragment, useEffect, forwardRef} from 'react'
+import React, {Fragment, useEffect, forwardRef, useState} from 'react'
 import {Typography, Box, makeStyles, Button, Paper, FormControlLabel, Switch} from '@material-ui/core'
 import MaterialTable from 'material-table'
 import {connect} from 'react-redux'
 import { admin_actions } from '../../redux-store'
 import Helmet from 'react-helmet'
 import { AddBox, FirstPage, LastPage, ChevronLeft, ChevronRight, Search, ArrowDownward, Clear, Check, Edit, DeleteOutline, SaveAlt, FilterList, Remove, ViewColumn, Add } from '@material-ui/icons'
+import { AddModal, EditModal } from './components'
 
 
 const useStyle = makeStyles((theme) => ({
@@ -38,12 +39,18 @@ const tableIcons = {
 
 function Admins(props) {
 
-    const {adminsList} = props
+    const {adminsList, addAdmin, editAdmin} = props
     const classes  = useStyle()
+    const [addModal, setAddModal] = useState(false)
+    const [editModal, setEditModal] = useState(false)
+    const [modalAdmin, setModalAdmin] = useState({})
     useEffect(() => {
         console.log({'Props in Admins': props})
     }, [props])
-
+    const handleEditModal = (rowData) => {
+        setModalAdmin(rowData)
+        setEditModal(true)
+    }
     return (
         <Fragment>
             <Helmet>
@@ -52,7 +59,7 @@ function Admins(props) {
             <div className="main-layout-content"> 
                 <Box className="headings-box">
                     <Typography variant="h1" component="h1">Admin Screen</Typography>
-                    <Button variant="outlined" color="primary" className={classes.addBtn} startIcon={<Add />} >
+                    <Button variant="outlined" color="primary" className={classes.addBtn} startIcon={<Add />} onClick={() => setAddModal(true)}>
                         Add Admin
                     </Button>
                 </Box>
@@ -78,7 +85,9 @@ function Admins(props) {
                             {
                                 icon: Edit,
                                 tooltip: 'Edit Admin',
-
+                                onClick: (event, rowData) => {
+                                    handleEditModal(rowData)
+                                }
                             }
                         ]}
                         data={adminsList.map((admin) => {
@@ -99,6 +108,8 @@ function Admins(props) {
 
                     </MaterialTable>
                 </Paper>
+                <AddModal visible={addModal} closeModal={() => setAddModal(false)} addAdmin={addAdmin} />
+                <EditModal visible={editModal} closeModal={() => setEditModal(false)} currentAdmin={modalAdmin} editAdmin={editAdmin} />
             </div>
         </Fragment>
     )
@@ -111,7 +122,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        addAdmin: (admin) => dispatch(admin_actions.addAdmin(admin))
+        addAdmin: (admin) => dispatch(admin_actions.addAdmin(admin)),
+        editAdmin: (email, admin) => dispatch(admin_actions.editAdmin(email, admin))
     }
 }
 
