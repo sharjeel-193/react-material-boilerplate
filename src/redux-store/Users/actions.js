@@ -16,5 +16,13 @@ const editUser = (phone, user) => {
     }
 }
 
+const changeUserStatus = (phone, status) => {
+    console.log('Dispatchinh Change User Status Action')
+    return {
+        type: types.CHANGE_USER_STATUS,
+        payload: {phone, status}
+    }
+}
 
-export default {addUser, editUser}
+
+export default {addUser, editUser, changeUserStatus}

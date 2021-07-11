@@ -6,7 +6,8 @@ import { user_actions } from '../../redux-store'
 import {AddModal, EditModal} from './components'
 import Helmet from 'react-helmet'
 import { AddBox, FirstPage, LastPage, ChevronLeft, ChevronRight, Search, ArrowDownward, Clear, Check, Edit, DeleteOutline, SaveAlt, FilterList, Remove, ViewColumn, Add } from '@material-ui/icons'
-
+import Swal from 'sweetalert2'
+import { useTheme } from '@material-ui/core'
 const useStyle = makeStyles((theme) => ({
     addBtn: {
         '&:hover':{
@@ -37,8 +38,9 @@ const tableIcons = {
   }
 
 function Users(props) {
-    const {usersList, addUser, editUser} = props
+    const {usersList, addUser, editUser, changeStatus} = props
     const classes  = useStyle()
+    const theme = useTheme()
     const [addModal, setAddModal] = useState(false)
     const [editModal, setEditModal] = useState(false)
     const [modalUser, setModalUser] = useState({})
@@ -48,6 +50,23 @@ function Users(props) {
     const handleEditModal = (rowData) => {
         setModalUser(rowData)
         setEditModal(true)
+    }
+    const changeUserStatus = (user) => {
+        Swal.fire({
+            title: 'Confirm',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            confirmButtonColor: theme.palette.success.main,
+            cancelButtonText: 'No',
+            cancelButtonColor: theme.palette.error.main,
+            // text: `Do you really want to change status of ${admin.first_name +" "+ admin.last_name}?`,
+            text: `Do you really want to change status of ${user.first_name +" "+ user.last_name} ?`
+        }).then((result) => {
+            if(result.isConfirmed){
+                changeStatus(user.phone, !user.isActive)
+            }
+        })
     }
     return (
         <Fragment>
@@ -94,7 +113,7 @@ function Users(props) {
                                 phone: user.phone,
                                 isActive: (
                                     <FormControlLabel
-                                        control={<Switch  checked={user.isActive? true:false}/>}
+                                        control={<Switch  checked={user.isActive? true:false} onChange={() => changeUserStatus(user)} />}
                                         label={<Typography variant="body2" style={{color:user.isActive?'green':'red' }} >{user.isActive?'Active':'De Active'}</Typography>}
                                     />
                                 )
@@ -119,7 +138,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         addUser: (user) => dispatch(user_actions.addUser(user)),
-        editUser: (phone, user) => dispatch(user_actions.editUser(phone, user))
+        editUser: (phone, user) => dispatch(user_actions.editUser(phone, user)),
+        changeStatus: (phone, status) => dispatch(user_actions.changeUserStatus(phone, status))
     }
 }
 

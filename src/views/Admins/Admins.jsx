@@ -1,11 +1,12 @@
 import React, {Fragment, useEffect, forwardRef, useState} from 'react'
-import {Typography, Box, makeStyles, Button, Paper, FormControlLabel, Switch} from '@material-ui/core'
+import {Typography, Box, makeStyles, Button, Paper, FormControlLabel, Switch, useTheme} from '@material-ui/core'
 import MaterialTable from 'material-table'
 import {connect} from 'react-redux'
 import { admin_actions } from '../../redux-store'
 import Helmet from 'react-helmet'
 import { AddBox, FirstPage, LastPage, ChevronLeft, ChevronRight, Search, ArrowDownward, Clear, Check, Edit, DeleteOutline, SaveAlt, FilterList, Remove, ViewColumn, Add } from '@material-ui/icons'
 import { AddModal, EditModal } from './components'
+import Swal from 'sweetalert2'
 
 
 const useStyle = makeStyles((theme) => ({
@@ -39,8 +40,9 @@ const tableIcons = {
 
 function Admins(props) {
 
-    const {adminsList, addAdmin, editAdmin} = props
+    const {adminsList, addAdmin, editAdmin, changeStatus} = props
     const classes  = useStyle()
+    const theme = useTheme()
     const [addModal, setAddModal] = useState(false)
     const [editModal, setEditModal] = useState(false)
     const [modalAdmin, setModalAdmin] = useState({})
@@ -50,6 +52,23 @@ function Admins(props) {
     const handleEditModal = (rowData) => {
         setModalAdmin(rowData)
         setEditModal(true)
+    }
+    const changeAdminStatus = (admin) => {
+        Swal.fire({
+            title: 'Confirm',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            confirmButtonColor: theme.palette.success.main,
+            cancelButtonText: 'No',
+            cancelButtonColor: theme.palette.error.main,
+            // text: `Do you really want to change status of ${admin.first_name +" "+ admin.last_name}?`,
+            text: `Do you really want to change status of ${admin.first_name +" "+ admin.last_name} ?`
+        }).then((result) => {
+            if(result.isConfirmed){
+                changeStatus(admin.email, !admin.isActive)
+            }
+        })
     }
     return (
         <Fragment>
@@ -98,7 +117,7 @@ function Admins(props) {
                                 phone: admin.phone,
                                 isActive: (
                                     <FormControlLabel
-                                        control={<Switch  checked={admin.isActive? true:false}/>}
+                                        control={<Switch  checked={admin.isActive? true:false} onChange={() => changeAdminStatus(admin)} />}
                                         label={<Typography variant="body2" style={{color:admin.isActive?'green':'red' }} >{admin.isActive?'Active':'De Active'}</Typography>}
                                     />
                                 )
@@ -123,7 +142,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         addAdmin: (admin) => dispatch(admin_actions.addAdmin(admin)),
-        editAdmin: (email, admin) => dispatch(admin_actions.editAdmin(email, admin))
+        editAdmin: (email, admin) => dispatch(admin_actions.editAdmin(email, admin)),
+        changeStatus: (email, status) => dispatch(admin_actions.changeAdminStatus(email, status))
     }
 }
 

@@ -48,6 +48,15 @@ const adminReducer = (state=initialState, action) => {
                 ...state,
                 admins: newAdmins
             }
+        case types.CHANGE_ADMIN_STATUS:
+            console.log({'Change Admin Status Payload': action.payload})
+            index = state.admins.findIndex((admin) => admin.email==action.payload.email)
+            newAdmins = [...state.admins]
+            newAdmins[index].isActive = action.payload.status
+            return{
+                ...state,
+                admins: newAdmins
+            }
         default:
             return state
     }

@@ -45,6 +45,15 @@ const userReducer = (state=initialState, action) => {
                 ...state,
                 users: newUsers
             }
+        case types.CHANGE_USER_STATUS:
+            console.log({'Change USer Status Payload': action.payload})
+            index = state.users.findIndex((user) => user.phone==action.payload.phone)
+            newUsers = [...state.users]
+            newUsers[index].isActive = action.payload.status
+            return {
+                ...state,
+                users: newUsers
+            }
         default:
             return state
     }

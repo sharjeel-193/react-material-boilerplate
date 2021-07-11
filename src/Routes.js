@@ -1,5 +1,5 @@
 import React from 'react'
-import {BrowserRouter, Switch, Route} from 'react-router-dom'
+import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
 import {RouteWithLayout} from './components'
 import {Admins, Home, Login, SignUp, Users} from './views'
 import {Minimal, Main} from './layouts'
@@ -14,6 +14,7 @@ function Routes() {
                 <RouteWithLayout path="/admins" component={Admins} layout={Main} />
                 <RouteWithLayout component={Login} exact layout={Minimal} path="/login" />
                 <RouteWithLayout component={SignUp} exact layout={Minimal} path="/signup" />
+                <Redirect to="/login" />
             </Switch>
         </BrowserRouter>
     )

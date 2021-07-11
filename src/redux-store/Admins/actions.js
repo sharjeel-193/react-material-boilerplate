@@ -16,5 +16,12 @@ const editAdmin = (email, admin) => {
     }
 }
 
+const changeAdminStatus = (email, status) => {
+    console.log('Dispatching Change Admin Status Action')
+    return {
+        type: types.CHANGE_ADMIN_STATUS,
+        payload: {email, status}
+    }
+}
 
-export default {addAdmin, editAdmin}
+export default {addAdmin, editAdmin,changeAdminStatus}

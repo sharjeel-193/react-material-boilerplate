@@ -83,7 +83,7 @@ function Topbar(props) {
           </Hidden>
           <Hidden lgUp>
             <Toolbar>
-              <Link to="/" style={{textDecoration: 'none'}}>
+              <Link to="/dashboard" style={{textDecoration: 'none'}}>
                 <Box className={classes.logoBox}>
                   <img
                     className={classes.logo}
