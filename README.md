@@ -34,7 +34,7 @@ In the project directory, we are using following packaged for different types of
 
 * react-redux
 * redux
-* redux-thunk
+* @reduxjs/tooklit
 
 ### Backend Integrations
 

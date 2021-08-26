@@ -3,15 +3,16 @@ import Modal from 'react-awesome-modal'
 import {Field, Form, Formik, ErrorMessage} from 'formik' 
 import { addAdminSchema } from '../adminFormSchema'
 import { Box, Button, OutlinedInput, InputLabel, Typography, makeStyles } from '@material-ui/core'
-
+import { useDispatch } from 'react-redux'
+import {addAdmin} from '../../../redux-store/Admins/admins'
 
 
 const useStyles = makeStyles((theme) => ({
     cancelModalBtn: {
-        backgroundColor: theme.palette.error.light,
+        backgroundColor: theme.palette.error.main,
         color: 'white',
         '&:hover':{
-            backgroundColor: theme.palette.error.main
+            backgroundColor: theme.palette.error.dark
         },
         width:100
     },
@@ -25,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 function AddModal(props) {
-    const {visible, closeModal, addAdmin} = props
+    const {visible, closeModal} = props
+    const dispatch = useDispatch()
     const classes = useStyles()
     const handleAdminAdd = (values) => {
         const adminToAdd  = {
@@ -36,7 +38,8 @@ function AddModal(props) {
             isActive: true
         }
         console.log({'Add': adminToAdd})
-        addAdmin(adminToAdd)
+        // addAdmin(adminToAdd)
+        dispatch(addAdmin(adminToAdd))
         closeModal()
     }
     const AddManagerForm = () => {

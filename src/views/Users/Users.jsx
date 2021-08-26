@@ -1,8 +1,8 @@
 import React, {Fragment, useEffect, forwardRef, useState} from 'react'
 import {Typography, Box, makeStyles, Button, Paper, FormControlLabel, Switch} from '@material-ui/core'
 import MaterialTable from 'material-table'
-import {connect} from 'react-redux'
-import { user_actions } from '../../redux-store'
+import { useSelector, useDispatch } from 'react-redux'
+import {changeUserActive} from '../../redux-store/Users/users'
 import {AddModal, EditModal} from './components'
 import Helmet from 'react-helmet'
 import { AddBox, FirstPage, LastPage, ChevronLeft, ChevronRight, Search, ArrowDownward, Clear, Check, Edit, DeleteOutline, SaveAlt, FilterList, Remove, ViewColumn, Add } from '@material-ui/icons'
@@ -38,14 +38,15 @@ const tableIcons = {
   }
 
 function Users(props) {
-    const {usersList, addUser, editUser, changeStatus} = props
+    const state = useSelector((state) => state.user)
+    const dispatch = useDispatch()
     const classes  = useStyle()
     const theme = useTheme()
     const [addModal, setAddModal] = useState(false)
     const [editModal, setEditModal] = useState(false)
     const [modalUser, setModalUser] = useState({})
     useEffect(() => {
-        console.log({'Props in Users': props})
+        console.log({'State in Users': state})
     }, [props])
     const handleEditModal = (rowData) => {
         setModalUser(rowData)
@@ -64,7 +65,8 @@ function Users(props) {
             text: `Do you really want to change status of ${user.first_name +" "+ user.last_name} ?`
         }).then((result) => {
             if(result.isConfirmed){
-                changeStatus(user.phone, !user.isActive)
+                // changeStatus(user.phone, !user.isActive)
+                dispatch(changeUserActive({email: user.email, status: !user.isActive}))
             }
         })
     }
@@ -75,7 +77,7 @@ function Users(props) {
             </Helmet>
             <div className="main-layout-content">
                 <Box className="headings-box">
-                    <Typography variant="h1" component="h1">Users Screen</Typography>
+                    <Typography variant="h1" component="h1">Users</Typography>
                     <Button variant="outlined" color="primary" className={classes.addBtn} startIcon={<Add />} onClick={() => setAddModal(true)} >
                         Add User
                     </Button>
@@ -87,15 +89,25 @@ function Users(props) {
                         columns={[
                             {title: 'First Name', field: 'first_name'},
                             {title: 'Last Name', field: 'last_name'},
+                            {title: 'Email', field: 'email'},
                             {title: 'Phone No', field: 'phone'},
                             {title: 'Status', field: 'isActive', filtering:false}
                         ]}
                         options={{
-                            search: false,
-                            filtering: true,
-                            title: false,
+                            toolbar: false,
                             actionsColumnIndex: -1,
-                            toolbarButtonAlignment:"left"
+                            headerStyle: {
+                                backgroundColor: theme.palette.primary.light,
+                                color: theme.palette.secondary.light,
+                                fontWeight: 600,
+                                fontSize: 16
+                            },
+                            rowStyle:{
+                                alignItems: 'center',
+                            },
+                            search: false,
+                                    filtering: true,
+                                    title: false,
                         }}  
                         actions={[
                             {
@@ -106,10 +118,11 @@ function Users(props) {
                                 }
                             }
                         ]}
-                        data={usersList.map((user) => {
+                        data={state.users.map((user) => {
                             return {
                                 first_name: user.first_name,
                                 last_name: user.last_name,
+                                email: user.email,
                                 phone: user.phone,
                                 isActive: (
                                     <FormControlLabel
@@ -123,24 +136,11 @@ function Users(props) {
 
                     </MaterialTable>
                 </Paper>
-                <AddModal visible={addModal} closeModal={() => setAddModal(false)} addUser={addUser} />
-                <EditModal visible={editModal} closeModal={() => setEditModal(false)} currentUser={modalUser} editUser={editUser} />
+                <AddModal visible={addModal} closeModal={() => setAddModal(false)}  />
+                <EditModal visible={editModal} closeModal={() => setEditModal(false)} currentUser={modalUser}  />
             </div>
         </Fragment>
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        usersList: state.Users.users
-    }
-}
-const mapDispatchToProps = (dispatch) => {
-    return {
-        addUser: (user) => dispatch(user_actions.addUser(user)),
-        editUser: (phone, user) => dispatch(user_actions.editUser(phone, user)),
-        changeStatus: (phone, status) => dispatch(user_actions.changeUserStatus(phone, status))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Users)
+export default Users

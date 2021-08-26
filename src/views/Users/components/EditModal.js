@@ -3,13 +3,15 @@ import Modal from 'react-awesome-modal'
 import {Field, Form, Formik, ErrorMessage} from 'formik' 
 import {editAUserSchema} from '../userFormSchema'
 import { Box, Button, OutlinedInput, InputLabel, Typography, makeStyles } from '@material-ui/core'
+import { useDispatch } from 'react-redux'
+import {updateUser} from '../../../redux-store/Users/users'
 
 const useStyles = makeStyles((theme) => ({
     cancelModalBtn: {
-        backgroundColor: theme.palette.error.light,
+        backgroundColor: theme.palette.error.main,
         color: 'white',
         '&:hover':{
-            backgroundColor: theme.palette.error.main
+            backgroundColor: theme.palette.error.dark
         },
         width:100
     },
@@ -24,15 +26,18 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function EditModal(props) {
-    const {visible, closeModal, editUser, currentUser} = props
+    const {visible, closeModal, currentUser} = props
+    const dispatch = useDispatch()
     const classes = useStyles()
     const handleUserEdit = (values) => {
         const userToEdit  = {
             first_name: values.first_name,
             last_name: values.last_name,
+            phone: values.phone
         }
         console.log({'Edit': userToEdit})
-        editUser(currentUser.phone, userToEdit)
+        // editUser(currentUser.phone, userToEdit)
+        dispatch(updateUser({email: currentUser.email, user: userToEdit}))
         closeModal()
     }
     const EditUserForm = () => {
@@ -41,6 +46,7 @@ function EditModal(props) {
                 initialValues={{
                     first_name: currentUser.first_name,
                     last_name: currentUser.last_name,
+                    phone: currentUser.phone
                 }}
                 validationSchema={editAUserSchema}
                 onSubmit={values => {
@@ -61,6 +67,13 @@ function EditModal(props) {
                                 <InputLabel style={{marginBottom:'5px'}}>Last Name</InputLabel>
                                 <Field type="text" name="last_name" as={OutlinedInput} fullWidth error={errors.last_name} />
                                 <ErrorMessage name="last_name">
+                                    {error =><Typography color="error" variant="subtitle2">{error}</Typography>}
+                                </ErrorMessage>
+                            </Box>
+                            <Box mb={2}>
+                                <InputLabel style={{marginBottom:'5px'}}>Phone</InputLabel>
+                                <Field type="text" name="phone" as={OutlinedInput} fullWidth error={errors.phone} />
+                                <ErrorMessage name="phone">
                                     {error =><Typography color="error" variant="subtitle2">{error}</Typography>}
                                 </ErrorMessage>
                             </Box>

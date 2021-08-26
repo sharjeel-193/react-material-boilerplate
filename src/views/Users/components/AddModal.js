@@ -3,6 +3,8 @@ import Modal from 'react-awesome-modal'
 import {Field, Form, Formik, ErrorMessage} from 'formik' 
 import {addUserSchema} from '../userFormSchema'
 import { Box, Button, OutlinedInput, InputLabel, Typography, makeStyles } from '@material-ui/core'
+import { useDispatch } from 'react-redux'
+import {addUser} from '../../../redux-store/Users/users'
 
 
 
@@ -26,17 +28,19 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function AddModal(props) {
-    const {visible, closeModal, addUser} = props
+    const {visible, closeModal} = props
+    const dispatch = useDispatch()
     const classes = useStyles()
     const handleUserAdd = (values) => {
         const userToAdd  = {
             first_name: values.first_name,
             last_name: values.last_name,
             phone: values.phone,
+            email: values.email,
             isActive: true
         }
         console.log({'Add': userToAdd})
-        addUser(userToAdd)
+        dispatch(addUser(userToAdd))
         closeModal()
     }
     const AddUserForm = () => {
@@ -45,7 +49,8 @@ function AddModal(props) {
                 initialValues={{
                     first_name: '',
                     last_name: '',
-                    phone: ''
+                    phone: '', 
+                    email: ''
                 }}
                 validationSchema={addUserSchema}
                 onSubmit={values => {
@@ -66,6 +71,13 @@ function AddModal(props) {
                                 <InputLabel style={{marginBottom:'5px'}}>Last Name</InputLabel>
                                 <Field type="text" name="last_name" as={OutlinedInput} fullWidth error={errors.last_name} />
                                 <ErrorMessage name="last_name">
+                                    {error =><Typography color="error" variant="subtitle2">{error}</Typography>}
+                                </ErrorMessage>
+                            </Box>
+                            <Box mb={2}>
+                                <InputLabel style={{marginBottom:'5px'}}>Email</InputLabel>
+                                <Field type="text" name="email" as={OutlinedInput} fullWidth error={errors.email} />
+                                <ErrorMessage name="email">
                                     {error =><Typography color="error" variant="subtitle2">{error}</Typography>}
                                 </ErrorMessage>
                             </Box>
