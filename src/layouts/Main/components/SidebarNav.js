@@ -1,21 +1,14 @@
 import React, {forwardRef, useEffect} from 'react'
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { List, ListItem, ListItemIcon, ListItemText, Button, colors, Grid, Box, Typography, Modal, Backdrop, Grow, Hidden, Toolbar, IconButton, Avatar } from '@material-ui/core';
+import { Button, Box, Typography, Hidden, } from '@material-ui/core';
 import {Link, NavLink, useLocation} from 'react-router-dom'
-import { Menu as MenuIcon, Input as InputIcon } from "@material-ui/icons";
-import {Menu, MenuList, MenuItem} from '@material-ui/core'
+import {FaSignOutAlt} from 'react-icons/fa'
 
 const useStyles = makeStyles((theme) => ({
 	menuList:{
-		width:'100%'
-	},
-	menuItem:{
 		width:'100%',
-		padding: 0,
-		margin: '5px 0',
-		// backgroundColor: 'red'
+		marginTop: 20
 	},
     item: {
 		display: 'flex',
@@ -27,42 +20,40 @@ const useStyles = makeStyles((theme) => ({
 	},
 	menuBtn:{
 		margin: 0,
-		width:'300px',
+		fontSize: 14,
+		paddingTop: 10,
+		paddingBottom: 10,
+		borderRadius: 2,
 		display: 'flex',
 		justifyContent: 'flex-start',
 		color: theme.palette.primary.dark,
 	},
 	
 	icon: {
-		color: theme.palette.icon,
-		width: 32,
-		height: 32,
+		color: theme.palette.primary.dark,
+		width: 50,
+		height: 50,
 		display: 'flex',
 		alignItems: 'center',
-		marginRight: theme.spacing(1)
+		margin: 0
 	},
 	active: {
 		backgroundColor: theme.palette.primary.main,
-		color:'white',
+		fontWeight: 600,
+		color:theme.palette.secondary.light,
 		'& $icon':{
-			color: 'white'
+			color: theme.palette.secondary.light
 		},
 		'&:hover':{
 			backgroundColor: theme.palette.primary.main,
-			color:'white'
+			color:theme.palette.secondary.light
 		}
 	},
-	
-	listItemSelected: {
-		backgroundColor: 'blue'
+	logOutBtn:{
+		margin: '40px 0',
+		padding: '10px 0'
 	}
 }))
-const CustomRouterLink = forwardRef((props, ref) => (
-	<div ref={ref} style={{ flexGrow: 1 }}>
-		<Link {...props} />
-	</div>
-));
-
 const MenuRouterLink = forwardRef((props, ref) => (
 	<div ref={ref}>
 		<NavLink {...props} />
@@ -73,43 +64,27 @@ function SidebarNav(props) {
     const { pages, className, ...rest } = props;
 	const location = useLocation()
     const classes = useStyles()
-	useEffect(() => {
-		console.log(location.pathname)	
-	},[])
-	// const renderLink = React.useMemo(
-	// 	() => React.forwardRef<HTMLAnchorElement>((itemProps, ref) => <Link to={itemProps.path} ref={ref} {...itemProps} />),
-	// 	[itemProps.path],
-	//   )
+	// useEffect(() => {
+	// 	console.log(location.pathname)	
+	// },[])
     return (
         <>
-			<MenuList className={classes.menuList}>
+			<Box className={classes.menuList}>
 				{pages.map((page, index) => {
-					console.log(page, index)
 					return(
-						<MenuItem disableGutters className={classes.menuItem} >
-							<Button className={classes.menuBtn} to={page.path} component={MenuRouterLink} activeClassName={classes.active}>
-								<div className={classes.icon}>{page.icon}</div>
-								<Typography variant="inherit">
+						<Button className={classes.menuBtn} to={page.path} startIcon={page.icon} component={MenuRouterLink} activeClassName={classes.active}>
+								{/* <div className={classes.icon}>{page.icon}</div>
+								<Typography variant="inherit" style>
 									{page.title}
-								</Typography>
+								</Typography> */}
+								{page.title}
 							</Button>
-							
-
-						</MenuItem>
 					)
 				})}
-			</MenuList>
+			</Box>
 
-			<Hidden lgUp>
-				<Toolbar>
-				<div className={classes.flexGrow} />
-				<IconButton>
-					<Avatar>J</Avatar>
-				</IconButton>
-				<IconButton>
-					<InputIcon />
-				</IconButton>
-				</Toolbar>
+			<Hidden only={['xl','lg']} >
+				<Button color="primary" variant="outlined" fullWidth endIcon={<FaSignOutAlt />} className={classes.logOutBtn}>Log Out</Button>
 			</Hidden>
         </>
     )

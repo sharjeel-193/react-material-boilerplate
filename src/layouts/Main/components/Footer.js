@@ -1,26 +1,31 @@
-import { Typography } from '@material-ui/core'
-import { Box, makeStyles } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
-    footer:{
-        backgroundColor: theme.palette.secondary.dark,
-        textAlign: 'center',
-        padding: '10px'
+    root:{
+        width: '100%',
+        textAlign:'center'
     },
-    footerText: {
+    footer:{
+        backgroundColor: 'black',
+        marginTop: '50px',
+        textAlign: 'center',
         color: 'white',
+        padding: '20px 0'
     }
 }))
+
+
 
 function Footer() {
     const classes = useStyles()
     return (
-        <Box className={classes.footer}>
-            <Typography variant="subtitle1" className={classes.footerText}>
-                &copy; Copyrights 2021 - Made with &hearts; by M. Sharjeel
-            </Typography>
-        </Box>
+        <div className={classes.root}>
+            
+            <div className={classes.footer}>
+                Copyright &copy; 2020 - Decade 2 Publications
+            </div>
+        </div>
     )
 }
 

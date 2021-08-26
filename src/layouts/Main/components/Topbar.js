@@ -1,16 +1,25 @@
 import React from 'react'
-
-import {makeStyles, Typography, AppBar, Toolbar, Box, LinearProgress, Button, Avatar, IconButton} from '@material-ui/core'
+import {makeStyles, AppBar, Toolbar, Box, LinearProgress, Button, IconButton} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import { Hidden } from '@material-ui/core';
-import { Menu as MenuIcon, Input as InputIcon } from "@material-ui/icons";
+import { Menu } from "@material-ui/icons";
+import {FaUserCircle, FaSignOutAlt} from 'react-icons/fa'
 
 const useStyles = makeStyles((theme) => ({
 	appbar:{
     backgroundColor: theme.palette.primary.main
   },
   logo: {
-    height: 30
+    height: 70,
+    margin: '5px 0',
+    [theme.breakpoints.down('md')]: {
+      height: 60
+    }
+  },
+  toolbar:{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   logoBox:{
     padding: '5px 0',
@@ -31,12 +40,8 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.light
     }
   },
-  signOutButton:{
-    margin: '0 10px',
-    padding: '5px 10px',
-    '&:hover':{
-      backgroundColor: theme.palette.primary.light
-    }
+  signOutBtn:{
+    
   }
 }));
 
@@ -49,68 +54,27 @@ function Topbar(props) {
           <Box   style={{visibility: loading? 'visible': 'hidden'}}>
             <LinearProgress color="secondary" />
           </Box>
-          <Hidden mdDown>
-            <Toolbar>
+          <Toolbar className={classes.toolbar}>
               <Link to="/" style={{textDecoration: 'none'}}>
                 <Box className={classes.logoBox}>
                   <img
                     className={classes.logo}
-                    src="/images/logo.png"
+                    src="assets/images/logo-footer.png"
                     alt="Logo"
                     srcset=""
                   />
-                  <Typography variant="h4" className={classes.brandName}>
-                    Brand  Name
-                  </Typography>
                 </Box>
               </Link>
-              <div className={classes.flexGrow} />
-              <Button
-                variant="text"
-                className={classes.profilebtn}
-                color="white"
-                endIcon={<Avatar>J</Avatar>}>
-                John Doe
-              </Button>
-              <Button
-                className={classes.signOutButton}
-                startIcon={<InputIcon />}
-                color="inherit"
-                >
-                Log out
-              </Button>
+              <Hidden only={['xs','sm','md']}>
+                <Button color="secondary" variant="outlined"  endIcon={<FaSignOutAlt />} className={classes.signOutBtn}>Log Out</Button>
+              </Hidden>
+              <Hidden only={['lg', 'xl']}>
+                  <IconButton onClick={onSidebarOpen}>
+                      <Menu />
+                  </IconButton>
+              </Hidden>
             </Toolbar>
-          </Hidden>
-          <Hidden lgUp>
-            <Toolbar>
-              <Link to="/dashboard" style={{textDecoration: 'none'}}>
-                <Box className={classes.logoBox}>
-                  <img
-                    className={classes.logo}
-                    src="/images/logo.png"
-                    alt="Logo"
-                    srcset=""
-                  />
-                  <Typography variant="h4" className={classes.brandName}>
-                    Brand  Name lLGUP
-                  </Typography>
-                </Box>
-              </Link>
-              <div className={classes.flexGrow} />
-              <IconButton color="secondary" onClick={onSidebarOpen}>
-                <MenuIcon />
-              </IconButton>
-            </Toolbar>
-            {/* <Toolbar>
-              <div className={classes.flexGrow} />
-              <IconButton>
-                <Avatar>J</Avatar>
-              </IconButton>
-              <IconButton>
-                <InputIcon />
-              </IconButton>
-            </Toolbar> */}
-          </Hidden>
+          
         </AppBar>
     
     )

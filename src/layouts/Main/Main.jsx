@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
       paddingLeft: 240
     },
     content: {
+      marginTop: 50,
       height: '100%',
     }
   }));

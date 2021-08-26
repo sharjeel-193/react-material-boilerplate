@@ -1,10 +1,9 @@
 import React, { Fragment } from 'react'
-import {MdDashboard} from 'react-icons/md'
-import {RiAdminFill} from 'react-icons/ri'
-import {ImUsers} from 'react-icons/im'
-import {Drawer, makeStyles} from '@material-ui/core'
+import {Avatar, Box, Drawer, makeStyles} from '@material-ui/core'
 import SidebarNav from './SidebarNav'
 import clsx from 'clsx';
+import menu from '../menu'
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	drawer: {
@@ -26,7 +25,10 @@ const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(2),
 		paddingTop: theme.spacing(5),
 	},
-
+	profileBox:{
+		textAlign: 'center',
+		color: 'white'
+	},
 	divider: {
 		margin: theme.spacing(2, 0),
 	},
@@ -38,31 +40,14 @@ const useStyles = makeStyles((theme) => ({
 		margin: theme.spacing(4),
 		textAlign: "center",
 	},
+	profileBtn:{
+		color: 'white'
+	}
 }));
 
 function Sidebar(props) {
     const { open, variant, onClose, className, ...rest } = props;
     const classes = useStyles()
-    const pages = [
-        {
-            title: 'Dashboard',
-            path: '/dashboard',
-            icon: <MdDashboard />
-
-        },
-        {
-            title: 'Admins',
-            path: '/admins',
-            icon: <RiAdminFill />
-
-        },
-        {
-            title: 'Users',
-            path: '/users',
-            icon: <ImUsers />
-
-        },
-    ]
 
     return (
         <Fragment>
@@ -78,7 +63,13 @@ function Sidebar(props) {
 					className={clsx(classes.root, className)}
 					onClick={onClose}
                 >
-                    <SidebarNav className={classes.nav} pages={pages} />
+					<Box className={classes.profileBox}>
+						<Link to="/profile" style={{textDecoration:'none'}}>
+							<Avatar style={{margin: '10px auto'}}>J</Avatar>
+							<h2 className={classes.profileBtn}>John Doe</h2>
+						</Link>
+					</Box>
+                    <SidebarNav className={classes.nav} pages={menu} />
 
 
                 </div>
